@@ -1,15 +1,6 @@
 <% @posts.each do |p| %>
-    <p>Title: <%=p.title %></p>
-    <p>Content: <%=p.content %></p>
-    <%= p.id%>
-    <p> Username: <%= p.user.name%>
-    <p>Country: <%= p.country.countries_name%>
-    <br>
-    <br>
+    <a href="/posts/<%=p.id%>"> <p>Title: <%=p.title%> </p>
     
-    
-
-
     
 
 <%end%>

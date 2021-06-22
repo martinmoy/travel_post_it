@@ -9,12 +9,20 @@ class PostsController < ApplicationController
         erb :'posts/new'
     end
 
-    #show individual post 
+    post '/posts' do 
+        @post = Post.create(params)
+        redirect "posts/#{@post.id}"
+    end
 
+    #show individual post 
     get '/posts/:id' do
         @post = Post.find_by_id(params[:id])
         erb :'posts/show'
     end
+
+    
+
+
 
     
 
