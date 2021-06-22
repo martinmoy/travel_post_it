@@ -1,2 +1,4 @@
-class Country < ActiveRecord
+class Country < ActiveRecord::Base
+    has_many :posts
+    has_many :users, through: :posts
 end
