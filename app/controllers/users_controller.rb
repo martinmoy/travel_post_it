@@ -23,12 +23,19 @@ class UsersController < ApplicationController
     post '/login' do 
         email = User.find_by_email(params[:email])
         binding.pry
+    
         if email && email.authenticate(params[:password])
-            session[:user_id] = user.id
+            session[:user_id] = email.id
             redirect '/'
         else
-            
+            flash[:error] = "Invalid Login"
+
         end
+    end
+
+    get 'logout' do
+        session.clear
+        redirect '/login'
     end
 
 
