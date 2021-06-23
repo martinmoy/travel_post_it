@@ -11,32 +11,44 @@ class PostsController < ApplicationController
 
 
     post '/posts' do 
-        @post = Post.create(params)
+        @post = Post.new(params)
+        @post.user_id = session[:user_id]
+        @post.save
+        #user.posts.build(params) 
         redirect "posts/#{@post.id}"
     end
 
 
     get '/posts/:id' do
-        @post = Post.find_by_id(params[:id])
+        get_post
         erb :'posts/show'
     end
 
-    
 
     get '/posts/:id/edit' do 
-        @post = Post.find_by_id(params[:id])
-        erb :'posts/edit'
+        get_post
+        if @post.user_id == current_user
+            erb :'posts/edit'
+        else
+            flash[:error] = "You are not the owner of this post"
+            redirect '/posts'
+        end
     end
 
 
     patch '/posts/:id' do
-        @post = Post.find_by_id(params[:id])
-        @post.update(title: params[:title], content: params[:content])
-        redirect to "/posts/#{@post.id}"
+        get_post
+        if @post.user_id == current_user
+            @post.update(title: params[:title], content: params[:content])
+            redirect to "/posts/#{@post.id}"
+        else
+            flash[:error] = "You are not the owner of this post"
+            redirect '/posts'
+        end
     end
 
     delete '/posts/:id' do
-        @post =Post.find_by_id(params[:id])
+        get_post
         @post.destroy
         redirect '/posts'
     end

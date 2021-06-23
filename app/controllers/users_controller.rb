@@ -12,7 +12,7 @@ class UsersController < ApplicationController
         else
             user.save
             session[:user_id] = user.id #logging user in 
-            redirect '/'
+            redirect '/posts'
         end
     end
 
@@ -22,18 +22,18 @@ class UsersController < ApplicationController
 
     post '/login' do 
         email = User.find_by_email(params[:email])
-        binding.pry
-    
+        
         if email && email.authenticate(params[:password])
             session[:user_id] = email.id
-            redirect '/'
+            redirect '/posts'
         else
             flash[:error] = "Invalid Login"
+            redirect '/login'
 
         end
     end
 
-    get 'logout' do
+    get '/logout' do
         session.clear
         redirect '/login'
     end
@@ -41,13 +41,6 @@ class UsersController < ApplicationController
 
 
 
-
-
-
-
-
-    #login
-    #logout
 
 
 end
